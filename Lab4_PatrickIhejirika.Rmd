@@ -1,0 +1,103 @@
+---
+title: "Lab4_PatrickIhejirika"
+author: "Patrick Ihejirika"
+date: "10/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Estimate the letter occurrence probabilities of all 26 letters in English by measuring a paragraph of English text from wikipedia. (hint use strsplit() to split a paragraph into individual letters) (1 point).
+
+```{r}
+#This was mostly if not completely my code
+
+my_paragraph <- "Charles Duke (born October 3, 1935) is a former astronaut, United States Air Force (USAF) officer and test pilot. As the lunar module pilot of Apollo 16 in 1972, he became (and remains) the tenth and youngest person to walk on the Moon. A 1957 graduate of the United States Naval Academy who joined the USAF, Duke completed his advanced flight training at Moody Air Force Base, and became a fighter pilot. He graduated from the Aerospace Research Pilot School in September 1965, and stayed on as an instructor. In April 1966, he was one of nineteen men selected for NASA's fifth group of astronauts. As a CAPCOM for Apollo 11, the first crewed landing on the Moon, in July 1969, his distinctive Southern drawl became familiar to audiences around the world. Duke was backup lunar module pilot for Apollo 13."
+the_letters <- unlist(strsplit(my_paragraph, split=""))
+the_letters
+
+df = data.frame(table(the_letters))
+
+total = sum(df$Freq)
+
+probability <- c()
+for (i in 1:length(df$Freq)) {
+    probability[i] <- (df$Freq[i]/total)
+}
+
+df = cbind(probability, df)
+```
+
+
+#Generate “random” strings of letters that are sampled from a distribution where letter occurrence probability is the same as natural English. Use the probabilities for each letter from this wikipedia article, or use your own estimates from the previous question (2 points).
+
+```{r}
+
+#The first line of code was mine, the others were from Dr. Crump's website
+
+my_letters = sample(df$the_letters, 20*5, replace = TRUE, prob = df$probability)
+
+my_strings <- matrix(my_letters, ncol=5)
+
+random_strings <-c()
+for(i in 1:dim(my_strings)[1]){
+  random_strings[i] <- paste(my_strings[i,], collapse="")
+}
+
+random_strings
+```
+
+#Generate a random walk of 10,000 steps. In a random walk, you are simulating the process of randomly taking a step up or down, as if you are on an infinite staircase. At each step you flip a coin. If you get heads you go up one step, if you get tails you go down one step. Start on step 0, then simulate a random walk for 10,000 steps. Your vector should preserve the step number for each step. For example, if the the first three steps were all heads, then the vector would begin with 0,1,2,3, which indicates a single step up each time. Plot the first 1,000 steps. (1 point)
+
+```{r}
+#I used Dr. Crump's code for the entirety of this question
+
+step = c(0)
+
+for (i in 1:10000) {
+  flip <- sample(c(1,-1),1)
+  step[i+1] <- step[i] +flip
+}
+plot(step[1:10000])
+```
+#What was the most positive and most negative step reached out of 10,000? (1 point)
+```{r}
+max(step)
+min(step)
+```
+
+#What was the longest run of steps where all steps were positive numbers. For example, in the sequence: 1,2,3,2,1,0,-1,-2,-1,-2,-1,0,1,2,3; the answer is 5 because the first five values were all positive, and this was the longest sequence of positive values. (1 point).
+```{r}
+# 
+# library(tidyverse)
+# trials = 1:10001
+# df2 = data.frame(
+#   step,
+#   trials
+# )
+# 
+# negative = df2 %>% filter(df2$step < 0)
+# positive = df2 %>% filter(df2$step > 0)
+
+
+#For this question, I initially tried attempting it indepentently but ultimately used Dr. Crump's code
+logical_step <- sign(step)
+
+sequence <- c()
+counter <- 0
+
+for (i in 1:length(logical_step)) {
+  if(logical_step[i] == 0){
+    sequence <- c(sequence,counter)
+    counter <- 0
+  } else {
+    counter <- counter+logical_step[i]
+  }
+}
+max(sequence)
+min(sequence)
+```
+
