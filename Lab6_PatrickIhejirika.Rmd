@@ -1,0 +1,44 @@
+---
+title: "Lab6_PatrickIhejirika"
+author: "Patrick Ihejirika"
+date: "10/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#Write a function that conducts a randomization test for the mean difference between two groups, and show that it works. Specifically, using your function, conduct a randomization test on the same data we used in the above example from lab. Report the results and briefly discuss what the results of the randomization tell you. (6 points). Extra: if the observed mean difference in the experiment was found to be .5, what would you have concluded from the randomization test?
+
+```{r}
+library(ggplot2)
+A = rnorm(10, 10, 10)
+B = rnorm(10, 10, 10)
+difference = mean(A) - mean(B)
+
+mean_differences <- c()
+for(i in 1:10000){
+  score_samples <- sample(c(A,B))
+  Mean_A <- mean(score_samples[1:10])
+  Mean_B <- mean(score_samples[11:20])
+  mean_differences[i] <- Mean_A - Mean_B
+}
+
+
+qplot(mean_differences)+
+  geom_histogram(color="orange")+
+  geom_vline(xintercept=mean(A) - mean(B), color ="red")+
+  theme_classic()
+
+Mean_A
+Mean_B
+mean_differences
+length(mean_differences[mean_differences >= difference ])/length(mean_differences)
+```
+
+
+
+
+
