@@ -1,0 +1,47 @@
+---
+title: "Lab7_PatrickIhejirika"
+author: "Patrick Ihejirika"
+date: "10/24/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+#A test-taker answered 50 true/false questions and received a score of 60% correct. Report the results of a binomial test and explain whether you think the test-score could be produced by the test-taker randomly guessing on each question. (2 points)
+```{r}
+binom.test(x = 30,
+           n = 50,
+           p = .5,
+           alternative='greater')
+
+#We fail to neglect the null because the p-value of 0.1013 is greater than the alpha level of 0.05, meaning that it could have been random guessing
+```
+#An examiner wants to make a TRUE/FALSE test, but is still deciding how many questions they will include. They want to make sure that it would be very difficult to simply randomly guess and be able to score any higher than 55% percent. How many questions would the examiner need to use to be confident that scores of 55% or higher were not produced by chance? (2 points)
+```{r}
+binom.test(x = 413,
+           n = 750,
+           alternative='greater')
+
+#750 Questions
+```
+
+#A test has 5 TRUE/FALSE questions (each with one right answer) and 5 multiple choice questions with four choices each (each with only one right answer). Create a sampling distribution or probability distribution to illustrate how a random chance process could perform on this test. (1 point) What is the probability that randomly guessing on each question could allow a person to receive 75% or greater on this test? (1 point)
+
+```{r}
+library(ggplot2)
+a = rep(c(1), times = 10)
+b = rep(c(0.5), times = 5)
+c = rep(c(0.25), times = 5)
+Simulated_tests = replicate(10000, rbinom(a,a,(b:c)))
+scores = colSums(Simulated_tests)/10
+qplot(scores) + geom_histogram()
+scoresdf = data.frame(scores)
+newdata <- subset(scoresdf, scores >= 0.75)
+probability = lengths(as.list(newdata))/lengths(as.list(scoresdf))
+probability
+```
+
