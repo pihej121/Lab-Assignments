@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+author: "Patrick Ihejirika"
+date: "11/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Write a function to convert a vector of raw-scores into z-scores. The function should have inputs for the vector, the mean and sd of the normal distribution, and should return a vector of zscores. (1 point). Also, demonstrate that the function works correctly (1 point). How you make the demonstration is up to you.
+
+#Advanced: Have an option so that the function will convert the raw scores to zscores in one of two ways:        using user provided mean and standard deviation using the calculated mean and standard deviation from the raw scores     
+```{r}
+Population_dataset = rnorm(100,mean = 100, sd = 10)
+Sample_Vector = data.frame(sample(Population_dataset, 30))
+
+Z_score = function(X){
+for (i in 1:length(Sample_Vector)) {
+    Sample <- Sample_Vector[i]
+    Z_Scores <- (Sample_Vector[i] - mean(Population_dataset))/(sd(Population_dataset)/sqrt(length(Sample_Vector)))
+        data <- data.frame(as.numeric(Sample, Z_Scores))
+}}
+    
+```
+                                                          
+#Base R does not have a function for a z-test. Write a function to accomplish a one-sample z-test. Remember, a one-sample z test is used to compare the probability of obtaining the sample mean (or larger or smaller) if it came from a known normal distribution. (2 points).
+
+#Use your z-test function to conduct a test of the following. A sample of 25 scores is taken. The mean of the sample is 50. The sample is assumed to have been taken from a normal distribution with mean 40 and standard deviation 7. Report a one-tailed z-test, examining the probability of obtaining a sample of greater than 50 in this situation. Report the results, and give a brief sentence explaining the result and the inference you make (2 points).
+
+```{r}
+mean_Population_dataset = 40
+sd_Population_dataset = 7
+Sample_Vector = data.frame(rnorm(25, 50))
+
+
+
+Z_score = function(X){
+for (i in 1:length(Sample_Vector)) {
+    Sample <- Sample_Vector[i]
+    Z_Scores <- (Sample_Vector[i] - (mean_Population_dataset))/((sd_Population_dataset)/sqrt(length(Sample_Vector)))
+    Percentiles <- pnorm(as.numeric(unlist(Z_Scores[i])),0,1, lower.tail=FALSE)
+        data <- data.frame("Sample", "Z_Scores", "Percentiles")
+}}
+
+```
