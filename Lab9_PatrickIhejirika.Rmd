@@ -1,0 +1,78 @@
+---
+title: "Lab9_PatrickIhejirika"
+author: "Patrick Ihejirika"
+date: "11/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+#The following paper links to open data, and describes a design where two chi-square tests are performed for Experiment 1 (A copy of this paper will be made available).
+
+```{r}
+#Obtain the data from the online repository, show your code for loading it into R, then conduct the same tests reported in Experiment 1 that the authors conducted. These include one binomial test, and two chi-square tests. Briefly report your re-analysis, and discuss whether you obtained the same values as the authors did (6 points).
+rm(list = ls())
+
+
+library(readxl)
+When_not_choosing_leads_to_not_liking_Data <- read_excel("When not choosing leads to not liking_Data.xlsx")
+
+When_not_choosing_leads_to_not_liking_Data$ExperimentNumber
+
+Experiment1a = When_not_choosing_leads_to_not_liking_Data[which(When_not_choosing_leads_to_not_liking_Data$ExperimentNumber ==1),]
+
+
+#Binomial Test
+
+
+
+Sum_C = sum(Experiment1a$`Infant Chose C`)
+Size_C = length(Experiment1a$`Infant Chose C`)
+q = Size_C - Sum_C
+
+binom_p <- (pbinom(q = q, size = Size_C, prob = 0.5, lower.tail = TRUE)*2)
+
+
+Experiment1a
+
+library(plyr)
+
+Experiment_hmm = Experiment1a[which(Experiment1a$`Infant Chose C`==1),]
+C_male = count((Experiment_hmm[which(Experiment_hmm$Gender=="M"),])$Gender)
+C_female = count((Experiment_hmm[which(Experiment_hmm$Gender=="F"),])$Gender)
+rbind(C_male,C_female)
+
+Experiment_hmm1 = Experiment1a[which(Experiment1a$`Infant Chose C`==0),]
+noC_male = count((Experiment_hmm1[which(Experiment_hmm1$Gender=="M"),])$Gender)
+noC_female = count((Experiment_hmm1[which(Experiment_hmm1$Gender=="F"),])$Gender)
+rbind(noC_male, noC_female)
+
+x = cbind(rbind(C_male,C_female), rbind(noC_male, noC_female))
+ 
+Gender = x$x
+
+rownames(x) = Gender
+
+x = subset(x, select = -c(x,x) )
+colnames(x) = c("C", "No C")
+
+
+
+chisq <- chisq.test(x)
+Observed = round(chisq$observed,2)
+Expected = round(chisq$expected,2)
+
+chisq1 = sum((Observed - Expected)^2/(Expected)) 
+
+#Chi-Square 1:
+##Age on infant choice
+
+tbl = table((round(Experiment1a$AgeMonths,2)),Experiment1a$`Infant Chose C`)
+chisq.test(tbl)
+
+
+```
+
+
+
