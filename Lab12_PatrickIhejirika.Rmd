@@ -1,0 +1,23 @@
+---
+title: "Lab12_PatrickIhejirika"
+author: "Patrick Ihejirika"
+date: "12/11/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Should you do a linear regression on this data? Explain.
+Y <- c(10,9,8,7,6,5,4,3,2,1,2,3,4,5,6,7,8,9,10)
+X <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+
+```{r}
+Y <- c(10,9,8,7,6,5,4,3,2,1,2,3,4,5,6,7,8,9,10)
+X <- c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)
+
+plot(X,Y)
+```
+No, you should not do a linear regression on this data. This is because, regression lines are used in situations where creating a linear plot is in the interest of the researcher. In this case, the plotted data generates a v-shaped graph. Although the data is plotted perfectly along a bi-linear graph, it is still non-linear meaning that a regression line cannot be used.
