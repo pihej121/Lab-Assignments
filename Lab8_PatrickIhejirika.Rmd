@@ -41,7 +41,7 @@ for (i in 1:length(Sample_Vector)) {
     Sample <- Sample_Vector[i]
     Z_Scores <- (Sample_Vector[i] - (mean_Population_dataset))/((sd_Population_dataset)/sqrt(length(Sample_Vector)))
     Percentiles <- pnorm(as.numeric(unlist(Z_Scores[i])),0,1, lower.tail=FALSE)
-        data <- data.frame("Sample", "Z_Scores", "Percentiles")
+        Percentile_df <- data.frame(Sample, Z_Scores, Percentiles)
 }}
 
 ```
